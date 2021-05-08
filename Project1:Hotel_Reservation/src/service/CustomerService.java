@@ -1,12 +1,13 @@
 package service;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Set;
+import java.util.HashSet;
+
 import model.Customer;
 
 public class CustomerService {
     //Create an empty Collection to store customer objects.
-    public static Collection<Customer> customers = new ArrayList<>();
+    public static Set<Customer> customers = new HashSet<>();
 
     //Create a method addCustomer to add customers to the Collection.
     public static void addCustomer(String email, String firstName, String lastName){
@@ -26,7 +27,7 @@ public class CustomerService {
     }
 
     //Create a method getAllCustomer to return all the objects stored in the Collection
-    public static Collection<Customer> getAllCustomers(){
+    public static Set<Customer> getAllCustomers(){
         return customers;
     }
 }

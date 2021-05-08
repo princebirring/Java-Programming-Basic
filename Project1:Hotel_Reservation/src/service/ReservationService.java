@@ -9,8 +9,8 @@ import java.util.*;
 public class ReservationService {
 
     //Create a empty Collection to store room objects and reserve objects.
-    public static Collection<IRoom> rooms = new ArrayList<>();
-    public static Collection<Reservation> reservations = new ArrayList<>();
+    public static Set<IRoom> rooms = new HashSet<>();
+    public static Set<Reservation> reservations = new HashSet<>();
 
     //Create a method addRoom to add a room object to the Collection.
     public static void addRoom(IRoom room){
@@ -70,7 +70,7 @@ public class ReservationService {
     }
 
     //Create a method to return all the reservations
-    public static Collection<Reservation> getAllReservations(){
+    public static Set<Reservation> getAllReservations(){
         return reservations;
     }
 }

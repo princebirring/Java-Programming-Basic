@@ -1,13 +1,14 @@
 package model;
 
 import java.util.regex.Pattern;
+import java.util.Objects;
 
 public class Customer {
     private String firstName;
     private String lastName;
     private String email;
 
-    private final String emailRegex = "^(.+)@(.+).(.+)$";
+    private static final String emailRegex = "^(.+)@(.+).(.+)$";
     private final Pattern pattern = Pattern.compile(emailRegex);
 
     public Customer(String firstName, String lastName, String email){
@@ -41,6 +42,19 @@ public class Customer {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object anObject) {
+        if (this == anObject) return true;
+        if (anObject == null || getClass() != anObject.getClass()) return false;
+        Customer customer = (Customer) anObject;
+        return Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(email, customer.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, email);
     }
 
     @Override

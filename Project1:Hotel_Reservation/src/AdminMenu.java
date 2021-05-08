@@ -93,6 +93,8 @@ public class AdminMenu {
                 case 5:
                     MainMenu.mainMenu();
                     return;
+                default:
+                    System.out.println("Invalid input");
             }
             System.out.println("Admin Menu");
             System.out.println("1 - All Customer List");

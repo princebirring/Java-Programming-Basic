@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
+import java.util.Calendar;
 
 public class MainMenu {
     static HotelResource hotelResource = new HotelResource();
@@ -36,22 +37,45 @@ public class MainMenu {
         Scanner scanner = new Scanner(System.in);
         Date checkInDate = new Date();
         Date checkOutDate = new Date();
-        System.out.println("Enter your arrival date[DD/MM/YYYY]:");
-        String checkInDateString = scanner.next();
-        checkInDate = dateFormatter(checkInDateString);
-        System.out.println("Enter your check date[DD/MM/YYYY]:");
-        String checkOutDateString = scanner.next();
-        checkOutDate = dateFormatter(checkOutDateString);
-        System.out.println("Available Rooms: ");
-        System.out.println(HotelResource.findARoom(checkInDate, checkOutDate));
-        System.out.println("Enter a Room Number: ");
-        String roomNumber = scanner.next();
-        IRoom room = HotelResource.getRoom(roomNumber);
-        System.out.println("Enter Customer email: ");
-        String email = scanner.next();
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat date = new SimpleDateFormat("DD/MM/YYYY");
+        try{
+            Date todayDate = date.parse(date.format(calendar.getTime()));
+            System.out.println("Enter your arrival date[DD/MM/YYYY]:");
+            String checkInDateString = scanner.next();
+            checkInDate = dateFormatter(checkInDateString);
+            System.out.println("Enter your check date[DD/MM/YYYY]:");
+            String checkOutDateString = scanner.next();
+            checkOutDate = dateFormatter(checkOutDateString);
+            System.out.println("Available Rooms: ");
+            if (!checkInDate.before(todayDate) && !checkOutDate.before(checkInDate)){
+                if (HotelResource.findARoom(checkInDate, checkOutDate).isEmpty()){
+                    //CheckIn Date One week ahead
+                    calendar.setTime(checkInDate);
+                    calendar.add(Calendar.DATE, 7);
+                    Date checkInDateOneWeekAhead = calendar.getTime();
+                    //CheckOut Date One week ahead
+                    calendar.setTime(checkOutDate);
+                    calendar.add(Calendar.DATE, 7);
+                    Date checkOutDateOneWeekAhead = calendar.getTime();
+                    System.out.println(HotelResource.findARoom(checkInDateOneWeekAhead, checkOutDateOneWeekAhead));
 
-        HotelResource.bookARoom(email, room, checkInDate, checkOutDate);
-        System.out.println("Your Reservation for room number" + roomNumber + "has been booked from " + checkInDateString + " to " + checkOutDate);
+                }else {
+                    System.out.println(HotelResource.findARoom(checkInDate, checkOutDate));
+                }
+                System.out.println("Enter a Room Number: ");
+                String roomNumber = scanner.next();
+                IRoom room = HotelResource.getRoom(roomNumber);
+                System.out.println("Enter Customer email: ");
+                String email = scanner.next();
+                HotelResource.bookARoom(email, room, checkInDate, checkOutDate);
+                System.out.println("Your Reservation for room number" + roomNumber + "has been booked from " + checkInDateString + " to " + checkOutDate);
+            }else {
+                System.out.println("Check in date needs to be from today onwards and check out date can not be before check in date");
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     //Create a method to createAccount
